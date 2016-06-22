@@ -1,18 +1,19 @@
 {
-	"name": "mean",
-	"version": "1.0.0",
-	"description": "MEAN Learning",
-	"main": "node1.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": " "
-	},
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"async": "latest"
-	}
+  "name": "mean",
+  "version": "1.0.0",
+  "description": "MEAN Learning",
+  "main": "node1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": " "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "latest",
+    "mongoose": "^4.4.19"
+  }
 }
