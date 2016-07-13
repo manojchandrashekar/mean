@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+    <body ng-controller="main">
+        <input type="text" ng-model="firstName" placeholder="first name">
+        <input type="text" ng-model="lastName" placeholder="last name">
+        <h2>Gender {{gender}}</h2>
+        <input type="radio" ng-model="gender" value="male" ng-click="style={color:'green'}">Male
+        <input type="radio" ng-model="gender" value="female" ng-click="style={color:'orange'}">Female
+        <br />
+        <h2 ng-style=style>Welcome {{firstName + ' ' + lastName}}</h2>
+        <button ng-disabled="!(firstName.length && lastName.length)" ng-click="signup()">Sign Up</button>
+
+        <div ng-show="showApp">
+            <h1>Your App</h1>
+            <ng-view></ng-view>
+            <br />
+            <br />
+            <a href="/#/view">View</a>
+            <br />
+            <br />
+            <a href="/#/edit">Edit</a>
+        </div>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+        <script src="//code.angularjs.org/1.2.16/angular-route.js"> </script>
+        
+        <script type="text/javascript">
+            var app = angular.module('app', ['ngRoute']);
+            app.controller('main', ['$scope', function($scope) {
+                $scope.showApp = false;
+                $scope.firstName = $scope.lastName = undefined;
+                $scope.gender = 'female';
+                $scope.style = {color:'orange'};
+
+                $scope.signup = function () {
+                    $scope.showApp = true;
+                    var person = {
+                        first: $scope.firstName,
+                        last: $scope.lastName,
+                        gender: $scope.gender
+                    }
+                    console.log(person);
+                };
+            }]);
+
+            app.config(['$routeProvider', function($routeProvider) {
+                $routeProvider
+                    .when('/view', {
+                        templateUrl: 'view.html'
+                    })
+                    .when('/edit', {
+                        templateUrl: 'edit.html'
+                    })
+                    .otherwise({
+                        redirectTo: '/'
+                    });
+                }]);
+        </script>
+
+    </body>
+</html>
