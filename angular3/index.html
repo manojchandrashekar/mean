@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+    <head>
+        <title>Angular built-in directives</title>
+    </head>
+    <body ng-controller="main" ng-init="confirmMeeting()">
+        <div ng-include="'/meeting.html'"></div>
+        <div style="text-align: center" ng-show="confirm" ng-bind-html="meetingPlace"></div>
+        <h2 ng-if="confirm" style="text-align: center">Meeting Time: 9AM</h2>
+        <input type="text" ng-model="filter" placeholder="Search... [$watch]" />
+        <input type="text" ng-model="filter2" ng-change="filterTable();" placeholder="Search... [ng-change]" style="float: right;" />
+        <table style="width:100%; border: 1px solid #000;">
+            <thead>
+                <tr>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="car in carsForSale">
+                    <td style="text-align: center; border: 1px solid #aaa;">{{car.make}}</td>
+                    <td style="text-align: center; border: 1px solid #aaa;">{{car.model}}</td>
+                    <td style="text-align: center; border: 1px solid #aaa;">{{car.year}}</td>
+                </tr>
+            </tbody>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js"></script>
+        <script src="//code.angularjs.org/1.5.7/angular-sanitize.js"> </script>
+        
+        <script type="text/javascript">
+            var app = angular.module('app', ['ngSanitize']);
+            app.controller('main', ['$scope', '$window', function($scope, $window) {
+
+                var cars = [{
+                    make: 'Maruti',
+                    model: 'Alto',
+                    year: '2000'
+                }, {
+                    make: 'Toyota',
+                    model: 'Innova',
+                    year: '2009'
+                }, {
+                    make: 'Honda',
+                    model: 'Brio',
+                    year: '2011'
+                }, {
+                    make: 'Maruti',
+                    model: 'Swift',
+                    year: '2009'
+                }];
+
+                $scope.carsForSale = cars;
+
+                $scope.$watch('filter', function(filterString) {
+                    if(angular.isDefined(filterString) && filterString.trim().length > 0) {
+                        $scope.filter2 = "";
+                        $scope.carsForSale = cars.filter(function(item) {
+                            var searchString = item.make + item.model + item.year;
+                            var re = RegExp(filterString.trim(), "i");
+                            return searchString.search(re) > -1;
+                        });
+                    } else {
+                        $scope.carsForSale = cars;
+                    }
+                });
+
+                $scope.filterTable = function() {
+                    if(angular.isDefined($scope.filter2) && $scope.filter2.trim().length > 0) {
+                        $scope.filter = "";
+                        $scope.carsForSale = cars.filter(function(item) {
+                            var searchString = item.make + item.model + item.year;
+                            var re = RegExp($scope.filter2.trim(), "i");
+                            return searchString.search(re) > -1;
+                        });
+                    } else {
+                        $scope.carsForSale = cars;
+                    }
+                };
+
+                $scope.confirmMeeting = function() {
+                    if($window.confirm('Hello, would you like to confirm your meeting today?')) {
+                        $scope.confirm = true;
+                    } else {
+                        $scope.confirm = false;
+                    }
+                };
+
+                $scope.meetingPlace = '<h2>Meeting Place: Tesla</h2>';
+            }]);
+        </script>
+
+    </body>
+</html>
